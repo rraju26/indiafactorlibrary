@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="indiafactorlibrary",
-    version="0.0.1",
+    version="0.0.2",
     description="A Python library to fetch data from Invespar Factor library for Indian equities.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
