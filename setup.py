@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="IndiaFactorLibrary",
-    version="0.1.0",
-    description="A Python library to fetch and analyse Fama/French and other Factors data for Indian equities.",
+    name="indiafactorlibrary",
+    version="0.0.1",
+    description="A Python library to fetch data from Invespar Factor library for Indian equities.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     packages=find_packages(),
@@ -18,5 +18,5 @@ setup(
         "Operating System :: OS Independent"
     ],
     python_requires=">=3.6",
-    license='MIT',
+    license='Apache License 2.0',
 )
