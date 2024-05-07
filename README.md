@@ -1,6 +1,6 @@
 # IndiaFactorLibrary
 
-Up-to-date remote data access for pandas, compatible with multiple versions of pandas.
+Remote data access for Invespar's Data Library: Fama-French Factors, Momentum, and Low-Risk Factors for the Indian Market.
 
 [![PyPI Version](https://img.shields.io/pypi/v/pandas-datareader.svg)](https://pypi.python.org/pypi/pandas-datareader/)
 [![Code Coverage](https://codecov.io/gh/pydata/pandas-datareader/branch/master/graph/badge.svg)](https://codecov.io/gh/pydata/pandas-datareader)
