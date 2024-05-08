@@ -123,10 +123,8 @@ The `DESCR' dataframe shows the titles for the dataframes and their shape. In th
 Monthly Returns (0):
 Contains monthly returns for the long-short factors: MF, SMB, HML, WML, RF, and MKT.
 Indexed by Dates, with each row representing a monthly data point.
-
 Annual Factors (1):
 Contains annual returns indexed by Years, with the same factors as above.
-
 Description (DESCR):
 A brief textual explanation of the dataset, including methodology references and links to relevant research, where appropriate, and the keys for other dataframes in the dictionary.
 Note:
