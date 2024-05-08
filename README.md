@@ -27,14 +27,16 @@ Using IndiaFactorLibrary package requires the following packages:
 ## Usage
 ```python
 from indiafactorlibrary import IndiaFactorLibrary
-
+```
 # Create an instance of the library
+```python
 ifl = IndiaFactorLibrary()
-
+```
 # Retrieve a list of available datasets
+```python
 available_datasets = ifl.get_available_datasets()
 print(available_datasets)
-
+```
 
 ## Available Datasets
 
