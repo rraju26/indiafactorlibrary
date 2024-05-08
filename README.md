@@ -34,7 +34,7 @@ ifl = IndiaFactorLibrary()
 # Retrieve a list of available datasets
 available_datasets = ifl.get_available_datasets()
 print(available_datasets)
-```
+
 
 ## Available Datasets
 
