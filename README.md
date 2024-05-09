@@ -2,8 +2,23 @@
 
 # IndiaFactorLibrary
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Introduction](#introduction)
+- [Key Features](#key-features)
+- [Installation](#installation)
+- [Requirements](#requirements)
+- [Usage](#usage)
+- [Available Datasets](#available-datasets)
+  - [Accessing Datasets](#accessing-datasets)
+  - [Example of a Use Case](#example-of-a-use-case)
+  - [Usage Tips](#usage-tips)
+- [Documentation](#documentation)
+  - [IndiaFactorLibrary Class (Invespar Data Library: Fama-French Factors, Momentum, and Low-Risk Factors for the Indian Market)](#indiafactorlibrary-class-invespar-data-library-fama-french-factors-momentum-and-low-risk-factors-for-the-indian-market)
+  - [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 ## Introduction
