@@ -1,5 +1,3 @@
-<script src="https://cdn.rawgit.com/thlorenz/doctoc/gh-pages/doctoc.min.js"></script>
-
 # IndiaFactorLibrary
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
