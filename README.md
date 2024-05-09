@@ -1,4 +1,4 @@
-head = <script src="https://cdn.rawgit.com/thlorenz/doctoc/gh-pages/doctoc.min.js"></script>
+<script src="https://cdn.rawgit.com/thlorenz/doctoc/gh-pages/doctoc.min.js"></script>
 
 # IndiaFactorLibrary
 
@@ -52,16 +52,25 @@ print(available_datasets)
 
 The following datasets are available through the **IndiaFactorLibrary** as of April 2024. This list is automatically updated, and users can access each dataset by passing the relevant symbol to the `read` method.
 
+**Fama French Factors Plus Momentum Factor**
+
 | Symbol                | Description                                           |
 |-----------------------|-------------------------------------------------------|
 | **ff4**               | Fama-French 4 factors                                 |
 | **ff6**               | Fama-French 6 factors                                 |
 
+
+**6 Portfolios: 2x3 sorts on Size and Target Characteristics**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
 | **size_value_portfolios** | 6 portfolios sorted by size and value (2x3)       |
 | **size_op_portfolios** | 6 portfolios sorted by size and operating profitability (2x3) |
 | **size_inv_portfolios** | 6 portfolios sorted by size and investment (2x3)    |
 | **size_mom_portfolios** | 6 portfolios sorted by size and momentum (2x3)      |
 
+**10 Portfolios: Decile univariate sorts**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
 | **size_deciles**      | 10 portfolios sorted by size                          |
 | **btm_deciles**       | 10 portfolios sorted by book-to-market ratio          |
 | **op_deciles**        | 10 portfolios sorted by operating profitability       |
@@ -69,12 +78,18 @@ The following datasets are available through the **IndiaFactorLibrary** as of Ap
 | **mom_deciles**       | 10 portfolios sorted by momentum                      |
 | **vol_deciles**       | 10 portfolios sorted by volatility                    |
 
+**25 Portfolios: 5x5 sorts on Size and Target Characteristics**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
 | **size_btm_5x5**      | 5x5 portfolios sorted by size and book-to-market ratio |
 | **size_op_5x5**       | 5x5 portfolios sorted by size and operating profitability |
 | **size_inv_5x5**      | 5x5 portfolios sorted by size and investment          |
 | **size_mom_5x5**      | 5x5 portfolios sorted by size and momentum            |
 | **size_vol_5x5**      | 5x5 portfolios sorted by size and volatility          |
 
+**Low-Risk Factors and Sub-Portfolios**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
 | **low_risk_factors**  | Low-risk factors                                      |
 | **low_risk_factors_vol** | Low-risk factors based on realized volatility      |
 | **low_risk_factors_bab_fp** | Betting Against Beta (Frazzini-Pedersen methodology) |
@@ -82,16 +97,25 @@ The following datasets are available through the **IndiaFactorLibrary** as of Ap
 | **low_risk_factors_bab_capm** | BAB using CAPM Beta (FF 2x3 construction)     |
 | **low_risk_factors_ivol** | Low-risk factors using idiosyncratic volatility   |
 
+**52-week High Effect**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
 | **f2_week_high**      | 52-week high effect                                   |
 
+**Conservative Formula**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
 | **cms_portfolios**    | CMS (Conservative Formula) portfolios                 |
 
+**Breakpoints**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
 | **ff5_breakpoints**   | Breakpoints for Fama-French 5 factors                 |
 | **mom_breakpoints**   | Breakpoints for momentum factors                      |
 | **lovol_breakpoints** | Breakpoints for low-volatility factors                |
 
 Note:
-This list is updated automatically, and the datasets available may change over time as new data is added or removed. For further details, please refer to papers available at https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=3354364.
+This list is updated from Invespar's website as of April 2024. The datasets available may change over time as new data is added or removed. For further details on detailed references, please refer to the papers available at https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=3354364.
 
 ### Accessing Datasets
 
@@ -140,16 +164,16 @@ Here's an example of the output structure:
 
 In this example:
 
-* **DataFrame 0 (Long Short Returns -- Monthly (235 rows x 6 cols)):** contains monthly returns for the market factor (MF) and long-short factors size (SMB), value (HML), momentum (WML). In addition it has risk-free rate (RF), and market return (MKT). Long-short factors represent hypothetical strategies that involve taking long positions in stocks with specific characteristics while simultaneously taking short positions in stocks with opposite characteristics. Examples of these characteristics include:
+* **DataFrame 0 (Long Short Returns -- Monthly (235 rows x 6 cols)):** contains monthly returns for the market factor (MF) and long-short factors size (SMB), value (HML), and momentum (WML). In addition, it has risk-free rate (RF) and market return (MKT). Long-short factors represent hypothetical strategies that involve taking long positions in stocks with specific characteristics while simultaneously taking short positions in stocks with opposite characteristics. Examples of these characteristics include:
 
   * **Size (SMB):** Long positions in small-size stocks and short positions in big-size stocks.
   * **Value (HML):** Long positions in value stocks (high book-to-market ratio) and short positions in expensive stocks (low book-to-market ratio).
   * **Profitability (RMW):** Long positions in stocks with robust operating profitability and short positions in stocks with weak operating profitability.
-  * **Investment (CMA):** Long positions in stocks with conservative investment and short positions in stock with aggressive investment.
+  * **Investment (CMA):** Long positions in stocks with conservative investment and short positions in stocks with aggressive investment.
   * **Momentum (WML):** Long positions in stocks with high past returns and short positions in stocks with low past returns.
   * **Other "factors":** The library also includes factors based on volatility/low-risk, the 52-week high effect, and the Conservative Formula.
 
-Analysing these factors helps understand the drivers of market returns beyond overall market movements. For a detailed analysis of Fama-French factors and their application in the Indian equities market, refer to Raju, Rajan (2022) available at https://papers.ssrn.com/abstract_id=4054146.
+Analysing these factors helps understand the drivers of market returns beyond overall market movements. For a detailed analysis of Fama-French factors and their application in the Indian equities market, refer to Raju, Rajan (2022), "*Four and Five-Factor Models in the Indian Equities Market*", available at https://papers.ssrn.com/abstract_id=4054146.
 
 * **DataFrame 1 (Annual Factors: January-December (19 rows x 6 cols)):** contains annual returns for the same factors.
 * **DataFrame `DESCR`:** provides additional information about the dataset and its structure. It also includes methodology references and links to relevant research, where appropriate, and the keys for other dataframes in the dictionary.
@@ -193,8 +217,8 @@ plt.show()
 
 * **Import Libraries:** Imports IndiaFactorLibrary and matplotlib for plotting.
 * **Read Data:** Retrieves Fama-French 4 factors and size decile portfolios.
-* **Access DataFrames:** Selects the DataFrames containing monthly returns.
-* **Calculate Cumulative Returns:** Calculates the cumulative returns for the SMB factor and the smallest size decile portfolio. **The data is in percent, we convert it to decimal**.
+* **Access DataFrames:** Select the DataFrames containing monthly returns.
+* **Calculate Cumulative Returns:** Calculates the cumulative returns for the SMB factor and the smallest size decile portfolio. **The data is in percent; we convert it to decimal**.
 * **Plot Returns:** Plots the cumulative returns over time, allowing for visual comparison.
 
 This example demonstrates how to retrieve data using IndiaFactorLibrary and perform a simple analysis, showcasing the library's functionality and potential applications.
