@@ -1,4 +1,4 @@
-<script src="https://cdn.rawgit.com/thlorenz/doctoc/gh-pages/doctoc.min.js"></script>
+head = <script src="https://cdn.rawgit.com/thlorenz/doctoc/gh-pages/doctoc.min.js"></script>
 
 # IndiaFactorLibrary
 
