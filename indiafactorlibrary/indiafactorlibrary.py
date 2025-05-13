@@ -45,13 +45,14 @@ class IndiaFactorLibrary:
     def _get_response(self, url, params=None, headers=None):
         retries = 3
         default_headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/html, */*"  #  acceptable content types
         }
         if headers:
             default_headers.update(headers)
         for attempt in range(retries):
             try:
-                response = self.session.get(url, params=params, headers=headers, timeout=5)
+                response = self.session.get(url, params=params, headers=default_headers, timeout=5)
                 response.raise_for_status()  # Will raise an HTTPError for bad responses
                 return response
             except requests.HTTPError as e:
