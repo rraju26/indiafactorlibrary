@@ -44,6 +44,11 @@ class IndiaFactorLibrary:
     
     def _get_response(self, url, params=None, headers=None):
         retries = 3
+        default_headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+        }
+        if headers:
+            default_headers.update(headers)
         for attempt in range(retries):
             try:
                 response = self.session.get(url, params=params, headers=headers, timeout=5)
