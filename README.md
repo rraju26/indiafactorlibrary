@@ -48,6 +48,12 @@ Using IndiaFactorLibrary package requires the following packages:
 -   lxml
 -   requests>=2.19.0
 
+## Release Notes
+
+Version `0.0.11` updates the package for newer pandas releases by removing deprecated `read_csv(date_parser=...)` usage. Date parsing now happens after CSV load, which preserves the existing behavior as closely as possible: clearly annual indexes may still convert to `PeriodIndex`, while monthly date-like indexes remain `DatetimeIndex`.
+
+This release also improves HTTP resilience by adding bounded retries for rate limits and transient server errors, including support for `Retry-After` when the server responds with HTTP 429.
+
 ## Usage
 
 ```python
@@ -278,6 +284,5 @@ Viewing Metadata: Access the `DESCR` field to understand dataset structure and m
 ### License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
-
 
 
