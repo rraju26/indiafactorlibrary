@@ -303,7 +303,7 @@ class IndiaFactorLibrary:
                 "Please install lxml if you want to use the "
                 "get_available_datasets function"
             ) from exc
-        response = self._get_response(_URL + "research/")
+        response = self._get_response(_URL + "research/", headers={"Accept": "text/html,application/xhtml+xml,*/*"})
         root = document_fromstring(response.content)
 
         datasets = [e.attrib["href"] for e in root.findall(".//a") if "href" in e.attrib]
