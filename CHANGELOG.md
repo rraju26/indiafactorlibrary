@@ -2,13 +2,13 @@
 
 ## 0.0.14
 
-- Fixed `get_available_datasets()` missing datasets that are linked from the main research page only via a per-dataset collection landing page (e.g. `/research/cape`) rather than a direct `ajax/download/` link, and fixed it failing to resolve site-relative hrefs on those pages. Adds `india_cape` to the discovered dataset list.
+- Fixed `get_available_datasets()` missing datasets that are linked from the main research page only via a per-dataset collection landing page (e.g. `/research/cape`). Adds `india_cape` to the discovered dataset list.
 - Fixed `read()` silently corrupting datasets whose feed has no title line before the CSV header (e.g. `india_cape`): the header row was being misread as a title and the first data row was being misread as the header, shifting every row and losing the header names. `_extract_table_chunk` now detects a title-less table by checking whether the first lines already look like a consistent CSV table, and `DESCR` falls back to the symbol name when no title is present.
 - Fixed `_parse_index_if_dates` skipping date parsing entirely on pandas >= 3.0, where a text column/index defaults to a dedicated `str` dtype instead of `object`. The dtype check now uses `pandas.api.types.is_string_dtype`, which recognizes both, so dates keep parsing correctly regardless of pandas version.
 - Pinned `pandas>=2.0` in `setup.py` (was unpinned) and raised `python_requires` to `>=3.8` to match - `pd.to_datetime(..., format="mixed")` in `_parse_index_if_dates` requires pandas 2.0+, which itself requires Python 3.8+, so the previous unpinned/`>=3.6` metadata could resolve to a combination that fails at import or at runtime. `README.md`'s Requirements section is updated to match.
-- Refreshed the README's "Available Datasets" table against the live site (was last updated April 2024): added `india_cape` and 15 other datasets that already existed but were missing, added three new category sections (Sector Portfolios, Universe Subsets, Fixed Income), and pointed to `get_available_datasets()` as the definitive list instead of claiming the table is "automatically updated".
-- Replaced the README's hand-written "Release Notes" prose (which only ever described 0.0.11, and had already gone stale relative to this file) with a pointer to `CHANGELOG.md`, so there's one place to keep in sync going forward instead of two.
-- Fixed a malformed `.gitignore`: stray `echo "..." >> .gitignore` lines had been committed literally instead of being run as shell commands, so `dist/`, `*.egg-info/`, and stray `.pyc` files were never actually excluded.
+- Refreshed the README's "Available Datasets" table against the live site: added `india_cape` and 15 other datasets that already existed but were missing, added three new category sections (Sector Portfolios, Universe Subsets, Fixed Income), and pointed to `get_available_datasets()` as the definitive list.
+- Replaced the README's hand-written "Release Notes" prose with a pointer to `CHANGELOG.md`, so there's one place to keep in sync going forward instead of two.
+
 
 ## 0.0.12
 
