@@ -50,7 +50,7 @@ Using IndiaFactorLibrary package requires the following packages:
 
 ## Release Notes
 
-See [CHANGELOG.md](CHANGELOG.md) for the full release history. The latest published release is `0.0.12`; anything listed under "Unreleased" there has landed on `main` but not yet been cut as a release.
+See [CHANGELOG.md](CHANGELOG.md) for the full release history. The latest release is `0.0.14`.
 
 ## Usage
 
