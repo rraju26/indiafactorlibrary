@@ -33,7 +33,7 @@ For practitioners, students, researchers, and other finance professionals seekin
 
 ## Installation
 
-To install IndiaFactorLibrary, ensure you have Python 3.6 or later and use `pip`:
+To install IndiaFactorLibrary, ensure you have Python 3.8 or later and use `pip`:
 
 ```shell
 pip install indiafactorlibrary
@@ -43,16 +43,14 @@ pip install indiafactorlibrary
 
 Using IndiaFactorLibrary package requires the following packages:
 
--   Python 3.6 or later
--   pandas>=1.5.3
+-   Python 3.8 or later
+-   pandas>=2.0
 -   lxml
 -   requests>=2.19.0
 
 ## Release Notes
 
-Version `0.0.11` updates the package for newer pandas releases by removing deprecated `read_csv(date_parser=...)` usage. Date parsing now happens after CSV load, which preserves the existing behavior as closely as possible: clearly annual indexes may still convert to `PeriodIndex`, while monthly date-like indexes remain `DatetimeIndex`.
-
-This release also improves HTTP resilience by adding bounded retries for rate limits and transient server errors, including support for `Retry-After` when the server responds with HTTP 429.
+See [CHANGELOG.md](CHANGELOG.md) for the full release history. The latest published release is `0.0.12`; anything listed under "Unreleased" there has landed on `main` but not yet been cut as a release.
 
 ## Usage
 
@@ -69,7 +67,7 @@ print(available_datasets)
 
 ## Available Datasets
 
-The following datasets are available through the **IndiaFactorLibrary** as of April 2024. This list is automatically updated, and users can access each dataset by passing the relevant symbol to the `read` method.
+The table below is a snapshot of the datasets available through the **IndiaFactorLibrary** as of September 2026, grouped to match Invespar's research page. Invespar adds new datasets from time to time, so this table can lag - call `ifl.get_available_datasets()` for the current, definitive list, and pass the relevant symbol to the `read` method to fetch it.
 
 **Fama French Factors Plus Momentum Factor**
 
@@ -77,6 +75,7 @@ The following datasets are available through the **IndiaFactorLibrary** as of Ap
 |-----------------------|-------------------------------------------------------|
 | **ff4**               | Fama-French 4 factors                                 |
 | **ff6**               | Fama-French 6 factors                                 |
+| **ff6_usd**           | Fama-French 6 factors, USD-denominated                |
 
 
 **6 Portfolios: 2x3 sorts on Size and Target Characteristics**
@@ -86,6 +85,9 @@ The following datasets are available through the **IndiaFactorLibrary** as of Ap
 | **size_op_portfolios** | 6 portfolios sorted by size and operating profitability (2x3) |
 | **size_inv_portfolios** | 6 portfolios sorted by size and investment (2x3)    |
 | **size_mom_portfolios** | 6 portfolios sorted by size and momentum (2x3)      |
+| **size_str_portfolios** | 6 portfolios sorted by size and short-term reversal (2x3) |
+| **size_ltr_portfolios** | 6 portfolios sorted by size and long-term reversal (2x3) |
+| **size_dp_portfolios** | 6 portfolios sorted by size and dividend yield (2x3)  |
 
 **10 Portfolios: Decile univariate sorts**
 | Symbol                | Description                                           |
@@ -96,6 +98,9 @@ The following datasets are available through the **IndiaFactorLibrary** as of Ap
 | **in_deciles**        | 10 portfolios sorted by investment                    |
 | **mom_deciles**       | 10 portfolios sorted by momentum                      |
 | **vol_deciles**       | 10 portfolios sorted by volatility                    |
+| **str_deciles**       | 10 portfolios sorted by short-term reversal           |
+| **ltr_deciles**       | 10 portfolios sorted by long-term reversal            |
+| **dp_deciles**        | 10 portfolios sorted by dividend yield (D/P)          |
 
 **25 Portfolios: 5x5 sorts on Size and Target Characteristics**
 | Symbol                | Description                                           |
@@ -105,6 +110,8 @@ The following datasets are available through the **IndiaFactorLibrary** as of Ap
 | **size_inv_5x5**      | 5x5 portfolios sorted by size and investment          |
 | **size_mom_5x5**      | 5x5 portfolios sorted by size and momentum            |
 | **size_vol_5x5**      | 5x5 portfolios sorted by size and volatility          |
+| **size_str_5x5**      | 5x5 portfolios sorted by size and short-term reversal |
+| **size_ltr_5x5**      | 5x5 portfolios sorted by size and long-term reversal  |
 
 **Low-Risk Factors and Sub-Portfolios**
 | Symbol                | Description                                           |
@@ -133,8 +140,31 @@ The following datasets are available through the **IndiaFactorLibrary** as of Ap
 | **mom_breakpoints**   | Breakpoints for momentum factors                      |
 | **lovol_breakpoints** | Breakpoints for low-volatility factors                |
 
+**Sector Portfolios**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
+| **trbc_11**           | 11 sector portfolios (TRBC economic sectors)          |
+| **gics_11**           | 11 sector portfolios (GICS sectors)                   |
+| **trbc_29**           | 29 sector portfolios (TRBC business sectors)          |
+
+**Universe Subsets**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
+| **u500_ff5**          | Fama-French 5 + Momentum factors for the top 500 firms by market cap (formed each September) |
+| **u750_ff5**          | Fama-French 5 + Momentum factors for the top 750 firms by market cap (formed each September) |
+
+**Fixed Income**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
+| **fi_factors**        | India fixed-income factor proxies: TERM and CREDIT    |
+
+**Valuation**
+| Symbol                | Description                                           |
+|-----------------------|-------------------------------------------------------|
+| **india_cape**        | Monthly cyclically adjusted P/E (CAPE) for the BSE Sensex and NIFTY 500, across 5-, 7-, and 10-year earnings windows |
+
 Note:
-This list is updated from Invespar's website as of April 2024. The datasets available may change over time as new data is added or removed. For further details on detailed references, please refer to the papers available at https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=3354364.
+This snapshot reflects Invespar's website as of September 2026. The datasets available may change over time as new data is added or removed - use `get_available_datasets()` rather than this table if your code depends on the exact current list. For further details on detailed references, please refer to the papers available at https://papers.ssrn.com/sol3/cf_dev/AbsByAuth.cfm?per_id=3354364.
 
 ### Accessing Datasets
 

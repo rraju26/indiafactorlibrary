@@ -45,7 +45,11 @@ def _parse_index_if_dates(index):
     if not isinstance(index, pd.Index):
         return index
 
-    if index.dtype != object and not _is_year_like_numeric_index(index):
+    # is_string_dtype (rather than dtype == object) is what keeps this
+    # working on pandas >= 3.0, where a text column/index defaults to a
+    # dedicated "str" dtype instead of "object"; is_string_dtype recognizes
+    # both, while still returning False for a numeric index.
+    if not pd.api.types.is_string_dtype(index.dtype) and not _is_year_like_numeric_index(index):
         return index
 
     original_name = index.name
@@ -200,22 +204,49 @@ class IndiaFactorLibrary:
         return alpha_count > numeric_count
 
     @staticmethod
+    def _looks_like_headerless_table(lines):
+        """
+        True when a chunk's own first line is already a CSV header, i.e.
+        there is no separate title line above it. Some datasets (e.g. the
+        India CAPE feed) are served as bare CSV with no title or
+        description at all, unlike the usual "Title\\nheader,row\\ndata"
+        shape. We detect this by checking that the first few lines share
+        the same comma count (a title line reads as prose and normally
+        has none), the same signal `analyze_chunk_content` uses.
+        """
+        sample = lines[:3]
+        if len(sample) < 2:
+            return False
+        comma_counts = [line.count(",") for line in sample]
+        if comma_counts[0] < 1:
+            return False
+        return len(set(comma_counts)) == 1
+
+    @staticmethod
     def _extract_table_chunk(chunk):
         stripped_chunk = chunk.strip()
         if not stripped_chunk or "\n" not in stripped_chunk:
             return None
 
-        title, table_text = stripped_chunk.split("\n", 1)
-        table_lines = [line.strip() for line in table_text.splitlines() if line.strip()]
-        if len(table_lines) < 2:
+        all_lines = [line.strip() for line in stripped_chunk.splitlines() if line.strip()]
+        if len(all_lines) < 2:
             return None
+
+        if IndiaFactorLibrary._looks_like_headerless_table(all_lines):
+            title, table_lines = None, all_lines
+        else:
+            title, table_text = stripped_chunk.split("\n", 1)
+            table_lines = [line.strip() for line in table_text.splitlines() if line.strip()]
+            if len(table_lines) < 2:
+                return None
+            title = title.strip()
 
         header_commas = table_lines[0].count(",")
         first_row_commas = table_lines[1].count(",")
         if header_commas < 1 or first_row_commas < 1:
             return None
 
-        return title.strip(), "\n".join(table_lines)
+        return title, "\n".join(table_lines)
 
     @staticmethod
     def _read_csv_table(table_text, params):
@@ -270,6 +301,11 @@ class IndiaFactorLibrary:
                 continue
 
             title, table_text = extracted_chunk
+            if title is None:
+                # No title line was present in the source (e.g. a bare CSV
+                # feed with no description) - fall back to the symbol so
+                # DESCR still identifies which table this is.
+                title = symbol
             df = self._read_csv_table(table_text, params)
             if df.empty and len(df.columns) == 0:
                 continue
@@ -287,9 +323,28 @@ class IndiaFactorLibrary:
 
         return datasets
 
+    # Sub-pages directly under /research/ that are known site furniture
+    # rather than a per-dataset collection landing page (like /research/cape)
+    # and so should not be crawled for download links.
+    _NON_COLLECTION_RESEARCH_SLUGS = {"datasets", "methodology"}
+
+    def _fetch_html(self, url, document_fromstring):
+        response = self._get_response(
+            url, headers={"Accept": "text/html,application/xhtml+xml,*/*"}
+        )
+        root = document_fromstring(response.content, base_url=url)
+        root.make_links_absolute()
+        return [e.attrib["href"] for e in root.findall(".//a") if "href" in e.attrib]
+
     def _fetch_available_datasets(self):
         """
         Get the list of datasets available from the Fama/French data library.
+
+        Most datasets are linked directly from the main research page as
+        absolute ajax/download/ URLs. Some newer datasets (e.g. India CAPE)
+        instead sit behind their own collection landing page
+        (/research/<slug>) and are linked from there with a site-relative
+        href, so those pages are followed one level deep as well.
 
         Returns
         -------
@@ -303,12 +358,44 @@ class IndiaFactorLibrary:
                 "Please install lxml if you want to use the "
                 "get_available_datasets function"
             ) from exc
-        response = self._get_response(_URL + "research/", headers={"Accept": "text/html,application/xhtml+xml,*/*"})
-        root = document_fromstring(response.content)
 
-        datasets = [e.attrib["href"] for e in root.findall(".//a") if "href" in e.attrib]
-        datasets = [ds for ds in datasets if ds.startswith(_URL + _URL_PREFIX)]
-        return [ds[len(_URL + _URL_PREFIX):] for ds in datasets]
+        research_url = _URL + "research/"
+        download_prefix = _URL + _URL_PREFIX
+
+        def download_symbols(hrefs):
+            return [h[len(download_prefix):] for h in hrefs if h.startswith(download_prefix)]
+
+        def collection_pages(hrefs):
+            pages = set()
+            for href in hrefs:
+                path_part = href.split("#", 1)[0]
+                if not path_part.startswith(research_url) or path_part == research_url:
+                    continue
+                remainder = path_part[len(research_url):].strip("/")
+                if not remainder or "/" in remainder:
+                    continue
+                if remainder in self._NON_COLLECTION_RESEARCH_SLUGS:
+                    continue
+                pages.add(path_part.rstrip("/"))
+            return sorted(pages)
+
+        main_hrefs = self._fetch_html(research_url, document_fromstring)
+        symbols = download_symbols(main_hrefs)
+
+        for page_url in collection_pages(main_hrefs):
+            try:
+                sub_hrefs = self._fetch_html(page_url, document_fromstring)
+            except RemoteDataError:
+                continue
+            symbols.extend(download_symbols(sub_hrefs))
+
+        seen = set()
+        ordered = []
+        for symbol in symbols:
+            if symbol not in seen:
+                seen.add(symbol)
+                ordered.append(symbol)
+        return ordered
 
     @staticmethod
     def get_available_datasets():

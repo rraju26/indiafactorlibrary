@@ -12,8 +12,8 @@ setup(
     long_description_content_type="text/markdown",
     packages=find_packages(),
     install_requires=[
-        "pandas",
-        "requests",
+        "pandas>=2.0",
+        "requests>=2.19.0",
         "lxml"
     ],
     classifiers=[
@@ -21,6 +21,6 @@ setup(
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent"
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     license="Apache License 2.0",
 )
